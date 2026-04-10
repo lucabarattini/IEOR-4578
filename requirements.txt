@@ -3,4 +3,5 @@ pandas
 matplotlib
 scipy
 statsmodels
+scikit-learn
 openpyxl
