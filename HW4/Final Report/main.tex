@@ -119,8 +119,11 @@
 \newcommand{\hmwkAuthorName}{\textbf{Luca Barattini - UNI: LB3656}}
 
 % GitHub repository links
-\newcommand{\hmwkNbURL}{https://github.com/lucabarattini/IEOR-4578/tree/main/HW4}
-\newcommand{\hmwkPdfURL}{https://github.com/lucabarattini/IEOR-4578/blob/main/HW4/HW4.pdf}
+\newcommand{\hmwkNbURL}{https://github.com/lucabarattini/IEOR-4578/blob/main/HW4/Q1_OLS_Macro.ipynb}
+\newcommand{\secondgithub}{https://github.com/lucabarattini/IEOR-4578/blob/main/HW4/Q2_OLS_Chip.ipynb}
+\newcommand{\thirdgithub}{https://github.com/lucabarattini/IEOR-4578/blob/main/HW4/Q3_Poisson_Smokers.ipynb}
+
+
 
 %
 % Title Page
@@ -139,10 +142,11 @@
     \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}\\
     \vspace{0.25in}
     \large{
-        \textbf{Code Repositories:} \\
+        \textbf{Jupyter Notebooks:} \\
         \vspace{0.1in}
-        \href{\hmwkNbURL}{\faGithub \ Jupyter Notebooks} \hspace{0.5in}
-        \href{\hmwkPdfURL}{\faGithub \ Exported PDF}
+        \href{\hmwkNbURL}{\faGithub \ First}\hspace{0.1mm}
+        \href{\secondgithub}{\faGithub \ Second}
+        \href{\thirdgithub}{\faGithub \ Third}
     }
     \vspace{3in}
 }
@@ -208,7 +212,7 @@ x5             3.8759      0.375     10.338      0.000       3.137       4.615
 x6            -7.6557      2.202     -3.476      0.001    -11.997      -3.314
 ==============================================================================
 \end{lstlisting}
-
+\pagebreak
 \textbf{Discussion of each summary statistic:}
 \begin{itemize}
     \item \textbf{Method = Least Squares.} The closed-form OLS solution $\hat{\beta} = (X^\top X)^{-1} X^\top y$ is used, no iterative optimizer.
@@ -244,6 +248,7 @@ Parameter         Coef  SE (manual)  SE (statsmodels)   t (manual)  t (statsmode
 \end{lstlisting}
 
 \textbf{Conclusion:}\\
+\\
 The manually-computed standard errors and t-values match \texttt{statsmodels} to every printed digit, validating the formula from lecture.
 
 \subsection*{Part c) Probability of the Null Hypothesis via \texttt{t\_score\_probability}}
@@ -263,7 +268,8 @@ Parameter         Coef      t-value  p-value (manual)  p-value (statsmodels)  Si
 \end{lstlisting}
 
 \textbf{Conclusion:}\\
-At $\alpha = 0.05$, \textbf{every single parameter}, including the intercept, rejects its null hypothesis ($H_0 : \beta_i = 0$). The weakest evidence is for $\beta_4 = $ \texttt{TB3MS} ($p = 0.0409$), the strongest for $\beta_1 = $ \texttt{JAPAN\_IP} ($p \approx 0$).
+At $\alpha = 0.05$, \textbf{every single parameter}, including the intercept, rejects its null hypothesis ($H_0 : \beta_i = 0$). The weakest evidence is for $\beta_4 = $ \texttt{TB3MS} ($p = 0.0409$), the strongest for $\beta_1 = $ \texttt{JAPAN\_IP} ($p \approx 0$).\\
+\hrule
 
 \subsection*{Part d) 95\% Confidence Intervals for the Constant, $\beta_4$, and $\beta_6$}
 
@@ -280,8 +286,9 @@ EXUSUK (b6)    -7.655680     2.202423    -11.997017     -3.314343
 \end{lstlisting}
 
 \textbf{Conclusion:}\\
-None of the three intervals straddles zero, so at $95\%$ confidence each of $\beta_0$, $\beta_4$, and $\beta_6$ is non-zero. \texttt{TB3MS} barely clears the upper bound ($-0.133$), consistent with its marginal p-value of $0.041$.
-
+\\
+None of the three intervals straddles zero, so at $95\%$ confidence each of $\beta_0$, $\beta_4$, and $\beta_6$ is non-zero. \texttt{TB3MS} barely clears the upper bound ($-0.133$), consistent with its marginal p-value of $0.041$.\\
+\hrule
 \subsection*{Part e) Ordered 80/20 Train-Test Split}
 
 Since \texttt{us\_macro\_quarterly.xlsx} is a time series, the ordering matters: the first 176 rows are used as training data and the remaining 44 rows are held out as test, exactly as in \texttt{GLM.py}.
@@ -298,7 +305,7 @@ Train-only (first 176) & 0.9382 & 0.9360 & 1143.5909 & 1165.7842 & 5.9902 & 14.4
 \end{tabular}
 \end{center}
 \vspace{0.5em}
-
+\pagebreak
 \begin{lstlisting}[language=Python, title={Python Console Output: Train-Only OLS Summary}]
                             OLS Regression Results
 ==============================================================================
@@ -325,6 +332,7 @@ x6            -9.8304      2.472     -3.976      0.000     -14.711      -4.950
 \end{lstlisting}
 
 \textbf{Conclusion:}\\
+\\
 The train-only model achieves in-sample $R^2 = 0.938$ but its out-of-sample RMSE on the last 44 quarters is $14.43$, more than twice the in-sample RMSE of $5.99$. The jump confirms that PCECTPI drifts materially outside the 1959 to 2002 training window, and also that \texttt{TB3MS} loses significance once the 2003 to 2013 quarters are excluded (its p-value moves from $0.041$ to $0.164$). The full-sample fit is noticeably more favourable on AIC/BIC because it uses 44 additional observations that happen to carry most of the post-crisis price movement.
 
 \subsection*{Part f) Three Variations of ANOVA}
@@ -346,7 +354,7 @@ ANOVA 2 -- Reduced (const, JAPAN_IP, UNRATE, EXUSUK) vs Full
 0     216.0  29145.446498      0.0           NaN         NaN           NaN
 1     213.0   8722.021811      3.0  20423.424686  166.253099  1.549676e-55
 \end{lstlisting}
-
+\pagebreak
 \begin{lstlisting}[language=Python, title={Python Console Output: ANOVA 3 -- Full vs Itself}]
 ========================================================================
 ANOVA 3 -- Full model vs itself
@@ -385,8 +393,8 @@ ANOVA 3 -- Full model vs itself
 \end{figure}
 
 \end{homeworkProblem}
-\pagebreak
-
+\hrule
+\vspace{4mm}
 % ==========================================
 % QUESTION 2
 % ==========================================
@@ -438,13 +446,13 @@ x5             3.2043      0.210     15.230      0.000       2.792       3.617
     \item \textbf{F-statistic = 1210, Prob(F-statistic) $\approx$ 0.00.} The joint null of all-zero slopes is rejected by a massive margin. The hardware specs as a block have extremely high explanatory power.
     \item \textbf{Log-Likelihood = $-14{,}449$.} Not interpretable in isolation, only via model comparison.
     \item \textbf{AIC = 28{,}910, BIC = 28{,}942.} Both are large in absolute terms because of the very large residual variance (FP32 GFLOPS spans several orders of magnitude), but are still informative for comparison with nested sub-models.
-    \item \textbf{Coef / Std err / t / P>|t|.} Four of the five regressors are significant at $\alpha = 0.05$. \texttt{Transistors (million)} dominates with $t = 35.37$, as one would expect since chip performance is fundamentally driven by transistor count, followed by \texttt{Freq (MHz)} ($t = 15.23$). \texttt{Process Size (nm)} is \textbf{not significant} ($p = 0.375$). Once transistor count, clock frequency, and die size are in the model, the nanometre process node contributes no additional information. The intercept is large and negative because the fitted plane is extrapolating far outside the observed range of specs.
+    \item \textbf{Coef / Std err / t / $P>|t|$} Four of the five regressors are significant at $\alpha = 0.05$. \texttt{Transistors (million)} dominates with $t = 35.37$, as one would expect since chip performance is fundamentally driven by transistor count, followed by \texttt{Freq (MHz)} ($t = 15.23$). \texttt{Process Size (nm)} is \textbf{not significant} ($p = 0.375$). Once transistor count, clock frequency, and die size are in the model, the nanometre process node contributes no additional information. The intercept is large and negative because the fitted plane is extrapolating far outside the observed range of specs.
     \item \textbf{Condition number $\approx 3.59 \times 10^{4}$.} Flagged by statsmodels as a possible multicollinearity issue, which is plausible because transistor count and die size are strongly correlated in practice.
 \end{itemize}
 
 \subsection*{Part b) Random 80/20 Train-Test Split}
 
-Chip rows are independent hardware products, not a time series, so we use the scikit-learn random split with \texttt{random\_state=42}, matching \texttt{GLM.py}. Train size: $1{,}288$. Test size: $322$.
+Chip rows are independent hardware products, not a time series, so I used the scikit-learn random split with \texttt{random\_state=42}, matching \texttt{GLM.py}. Train size: $1{,}288$. Test size: $322$.
 
 \vspace{0.5em}
 \begin{center}
@@ -484,6 +492,7 @@ x5             3.1989      0.237     13.491      0.000       2.734       3.664
 \end{lstlisting}
 
 \textbf{Conclusion:}\\
+\\
 Unlike the time-series case in Q1, the train-only and full-sample fits are virtually identical: $R^2 = 0.7904$ vs. $0.7905$, and the test RMSE ($1949.7$) is within $2.5\%$ of the in-sample RMSE ($1902.6$). Because the random 80/20 split samples chips uniformly from the whole dataset, there is no distribution shift between train and test, and the held-out predictions generalise cleanly. \texttt{Process Size} stays insignificant in the train-only fit ($p = 0.602$), further confirming it is not useful even after re-sampling.
 
 \subsection*{Part c) Three Variations of ANOVA}
@@ -532,20 +541,25 @@ ANOVA 3 -- Full model vs itself
 \begin{figure}[H]
      \centering
      \includegraphics[width=\textwidth]{Q2_full_fit.png}
-     \caption{Chip dataset full-sample OLS fit. Left: actual vs predicted \texttt{FP32 GFLOPS} with the $y = x$ line. Right: residuals vs. fitted values. The funnel shape in the residuals and the two or three extreme outliers are consistent with the large kurtosis (55) and skew (1.8) reported by the summary.}
+     \caption{Chip dataset full-sample OLS fit.\\
+     \\
+     Left: actual vs predicted \texttt{FP32 GFLOPS} with the $y = x$ line. Right: residuals vs. fitted values. The funnel shape in the residuals and the two or three extreme outliers are consistent with the large kurtosis (55) and skew (1.8) reported by the summary.}
      \label{fig:q2_fullfit}
 \end{figure}
+\pagebreak
 
 \begin{figure}[H]
      \centering
      \includegraphics[width=\textwidth]{Q2_train_test.png}
-     \caption{Chip dataset random 80/20 train/test split (\texttt{random\_state=42}). Left: in-sample fit on $1{,}288$ training rows. Right: out-of-sample fit on the $322$ held-out rows. The scatter patterns are almost indistinguishable, confirming the random split does not induce distribution shift.}
+     \caption{Chip dataset random 80/20 train/test split (\texttt{random\_state=42}).\\
+     \\
+     Left: in-sample fit on $1{,}288$ training rows. Right: out-of-sample fit on the $322$ held-out rows. The scatter patterns are almost indistinguishable, confirming the random split does not induce distribution shift.}
      \label{fig:q2_traintest}
 \end{figure}
 
 \end{homeworkProblem}
-\pagebreak
-
+\hrule
+\vspace{4mm}
 % ==========================================
 % QUESTION 3
 % ==========================================
@@ -557,11 +571,11 @@ ANOVA 3 -- Full model vs itself
 
 \subsection*{Model}
 
-\texttt{Deaths} is a count and therefore unsuitable for ordinary linear regression. We fit a Poisson GLM with a log link, following \texttt{GLM.py} exactly. Note that \texttt{PersonYears} is log-transformed in place so that its coefficient acts as an exposure offset:
+\texttt{Deaths} is a count and therefore unsuitable for ordinary linear regression. I fitted a Poisson GLM with a log link, following \texttt{GLM.py} exactly. Note that \texttt{PersonYears} is log-transformed in place so that its coefficient acts as an exposure offset:
 $$
-\log \mathbb{E}[\text{Deaths}_i] \;=\; \beta_0 + \beta_1 \text{Agecat}_i + \beta_2 \text{Smoke}_i + \beta_3 \text{Agecatsq}_i + \beta_4 \text{Smokeage}_i + \beta_5 \log(\text{PersonYears}_i).
+\log \mathbb{E}[\text{Deaths}_i] \;=\; \beta_0 + \beta_1 \text{Agecat}_i + \beta_2 \text{Smoke}_i + \beta_3 \text{Agecatsq}_i + \beta_4 \text{Smokeage}_i + \beta_5 \log(\text{PersonYears}_i)
 $$
-
+\pagebreak
 \subsection*{Part a) Poisson GLM Summary}
 
 \begin{lstlisting}[language=Python, title={Python Console Output: Poisson GLM Summary}]
@@ -651,14 +665,19 @@ PersonYears  & $0.7837$  & $0.5057$ & $1.5498$  & $0.1212$ & $2.1895$   & No  \\
 \begin{figure}[H]
      \centering
      \includegraphics[width=0.85\textwidth]{Q3_smokers_poisson.png}
-     \caption{Poisson GLM expected vs observed deaths by age category. Top panel: smokers. Bottom panel: non-smokers. The fitted curves (red) track the observed counts (black) very closely in both strata, consistent with the low deviance and Pearson $\chi^2$ reported above.}
+     \caption{Poisson GLM expected vs observed deaths by age category.\\
+     \\
+     Top panel: smokers. Bottom panel: non-smokers. The fitted curves (red) track the observed counts (black) very closely in both strata, consistent with the low deviance and Pearson $\chi^2$ reported above.}
      \label{fig:q3_poisson}
 \end{figure}
 
 \subsection*{Overall Conclusion}
 
 \textbf{Conclusion:}\\
-The Poisson GLM fits the mortality data very well: deviance and Pearson $\chi^2$ are both below their residual degrees of freedom, and the fitted curves hug the observed deaths in both smoker and non-smoker strata. The four covariates with interpretable biology, \texttt{Agecat}, \texttt{Agecatsq}, \texttt{Smoke}, and \texttt{Smokeage}, are all statistically significant at $\alpha = 0.05$, and their signs match the public-health story. Death rates rise steeply with age (with a small convex attenuation), smoking multiplies the death rate roughly six-fold at baseline age, and the smoker vs. non-smoker gap closes as both cohorts approach the end of life.
+\\
+The Poisson GLM fits the mortality data very well: deviance and Pearson $\chi^2$ are both below their residual degrees of freedom, and the fitted curves hug the observed deaths in both smoker and non-smoker strata. The four covariates with interpretable biology, \texttt{Agecat}, \texttt{Agecatsq}, \texttt{Smoke}, and \texttt{Smokeage}, are all statistically significant at $\alpha = 0.05$, and their signs match the public-health story.\\
+\\
+Death rates rise steeply with age (with a small convex attenuation), smoking multiplies the death rate roughly six-fold at baseline age, and the smoker vs. non-smoker gap closes as both cohorts approach the end of life.
 
 \end{homeworkProblem}
 
