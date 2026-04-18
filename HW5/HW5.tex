@@ -249,26 +249,9 @@ All three slopes are very small. The reason is that each region spans roughly ha
 
 \subsection*{Part c) Continuous Piecewise Linear}
 
-To remove the jumps at the knots, I fit all three pieces \emph{jointly} using a \textbf{basis expansion}.\\
-\\
-\textbf{What is a basis expansion?}\\
-\\
-A basis expansion writes the fitted curve as a weighted sum of simple ``building-block'' functions $h_1, h_2, h_3, h_4$, with the weights $\beta_0, \beta_1, \beta_2, \beta_3$ chosen by ordinary least squares:
-$$\hat{y}(x) \;=\; \beta_0 \, h_1(x) + \beta_1 \, h_2(x) + \beta_2 \, h_3(x) + \beta_3 \, h_4(x).$$
-
-The four building blocks for a continuous piecewise linear fit are:
-\begin{itemize}
-    \item $h_1(x) = 1$: a constant. Gives the curve a baseline level.
-    \item $h_2(x) = x$: a straight ramp. Gives the curve a baseline slope across the whole domain.
-    \item $h_3(x) = (x - x_{\text{knot}_1})_+$: a \emph{hinge} function. It equals zero for $x < x_{\text{knot}_1}$, then rises with slope $1$ for $x \geq x_{\text{knot}_1}$. The notation $(\cdot)_+ = \max(\cdot, 0)$ just means ``take the positive part'', i.e.\ replace anything negative by zero.
-    \item $h_4(x) = (x - x_{\text{knot}_2})_+$: same hinge idea, but at $x_{\text{knot}_2}$.
-\end{itemize}
-
-Adding $\beta_2 \cdot h_3$ to the fit means: ``starting at $x_{\text{knot}_1}$, change the slope by $\beta_2$''. Same for $\beta_3 \cdot h_4$ at $x_{\text{knot}_2}$. Because each hinge starts at zero exactly at its knot, the curve \textbf{changes slope at the knot but its value does not jump}. That is what makes the fit continuous.\\
-\\
-The coefficients $\beta_0, \ldots, \beta_3$ are obtained by solving the standard least-squares ``normal equations''
-$$H^\top H \, \beta \;=\; H^\top y,$$
-where $H$ is the matrix whose four columns are the four basis functions evaluated at every observed $x$.
+To remove the jumps at the knots, I fit all three pieces \emph{jointly} using ordinary least squares on four basis functions:
+$$\hat{y}(x) \;=\; \beta_0 + \beta_1 x + \beta_2 (x - x_{\text{knot}_1})_+ + \beta_3 (x - x_{\text{knot}_2})_+,$$
+where $(\cdot)_+ = \max(\cdot, 0)$. The two truncated linear terms act as ``hinges'' at the knots: they let the slope change there while keeping the function value continuous (no jumps).
 
 \begin{lstlisting}[language=Python, title={Python Console Output: Beta Coefficients}]
 Beta coefficients (h1, h2, h3, h4): [ 0.7680  -0.8663  0.8449  0.7402 ]
@@ -390,7 +373,7 @@ Region~1 slopes very slightly downward, Regions~2 and 3 slope very slightly upwa
 
 \subsection*{Part c) Continuous Piecewise Linear}
 
-Same truncated-linear basis expansion as Q1.c, fitted jointly with the four building blocks $h_1(x) = 1$, $h_2(x) = x$, $h_3(x) = (x - 82)_+$, $h_4(x) = (x - 165)_+$.
+Same truncated-linear basis expansion as Q1.c, with knots at week 82 and 165.
 
 \begin{lstlisting}[language=Python, title={Python Console Output: Beta Coefficients}]
 Beta coefficients (h1, h2, h3, h4): [ 25.9912  -0.0371  0.1468  0.0243 ]
@@ -398,13 +381,7 @@ Beta coefficients (h1, h2, h3, h4): [ 25.9912  -0.0371  0.1468  0.0243 ]
 
 \textbf{Conclusion:}\\
 \\
-The slope inside each region is the cumulative sum of the hinge coefficients:
-\begin{itemize}
-    \item Region~1 ($x < 82$): slope $= \beta_1 = -0.04$ (mild contraction).
-    \item Region~2 ($82 \leq x < 165$): slope $= \beta_1 + \beta_2 = +0.11$ (clear shift to growth at week~82).
-    \item Region~3 ($x \geq 165$): slope $= \beta_1 + \beta_2 + \beta_3 = +0.13$ (slightly faster growth after week~165).
-\end{itemize}
-This is the most informative of the four fits for this series: it captures three growth regimes joined cleanly at the structural breaks.
+The cumulative slopes across the three regions are $-0.04$, $+0.11$, and $+0.13$: a mild contraction in the early weeks, a clear shift to growth at week 82, and slightly faster growth after week 165. This is the most informative of the four fits for this series, capturing three growth regimes joined cleanly at the structural breaks.
 
 \begin{figure}[H]
      \centering
